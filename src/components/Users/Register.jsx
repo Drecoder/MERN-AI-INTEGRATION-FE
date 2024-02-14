@@ -2,7 +2,8 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-
+import { useMutation } from "@tanstack/react-query";
+import { registrationAPI } from "../../api/user/usersAPI";
 
 // Validation schema
 const validationSchema = Yup.object({
@@ -16,6 +17,9 @@ const validationSchema = Yup.object({
 const Registration = () => {
   const navigate = useNavigate();
 
+  // Mutation for registration
+  const mutation = useMutation({ mutationFn: registrationAPI });
+
   // Formik setup for form handling
   const formik = useFormik({
     initialValues: {
@@ -27,10 +31,12 @@ const Registration = () => {
     onSubmit: (values) => {
       // Here, handle the form submission
       console.log("Form values", values);
+      mutation.mutate(values)
       // Simulate successful registration
       //navigate("/login"); // Redirect user to login page
     },
   });
+console.log(mutation);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
